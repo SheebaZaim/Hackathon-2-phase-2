@@ -1,0 +1,51 @@
+/* responsive.css */
+/* Define CSS custom properties for responsive breakpoints */
+
+:root {
+  --mobile-breakpoint: 768px;
+  --tablet-breakpoint: 1024px;
+  --desktop-breakpoint: 1200px;
+  
+  /* Spacing */
+  --mobile-padding: 1rem;
+  --tablet-padding: 2rem;
+  --desktop-padding: 3rem;
+  
+  /* Typography */
+  --mobile-font-size: 1rem;
+  --tablet-font-size: 1.125rem;
+  --desktop-font-size: 1.25rem;
+}
+
+/* Media query mixins/utilities */
+.mobile-only {
+  display: block;
+}
+
+.tablet-up {
+  display: none;
+}
+
+.desktop-up {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .mobile-only {
+    display: none;
+  }
+  
+  .tablet-up {
+    display: block;
+  }
+}
+
+@media (min-width: 1024px) {
+  .tablet-up {
+    display: none;
+  }
+  
+  .desktop-up {
+    display: block;
+  }
+}
