@@ -1,27 +1,25 @@
-import asyncio
-from .session import engine, AsyncSessionLocal
-from ..models.base import Base
-from sqlalchemy import text
+"""Database initialization script for Todo App"""
+from .connection import init_db, test_connection
 
 
-async def init_db():
-    """Initialize the database and create tables."""
-    async with engine.begin() as conn:
-        # Create all tables
-        await conn.run_sync(Base.metadata.create_all)
+def main():
+    """Initialize database tables"""
+    print("Testing database connection...")
+    if not test_connection():
+        print("❌ Database connection failed. Check DATABASE_URL in .env")
+        return False
 
+    print("✅ Database connection successful")
 
-async def test_connection():
-    """Test database connection."""
+    print("Creating database tables...")
     try:
-        async with AsyncSessionLocal() as session:
-            result = await session.execute(text("SELECT 1"))
-            return result.scalar() == 1
+        init_db()
+        print("✅ Database tables created successfully")
+        return True
     except Exception as e:
-        print(f"Database connection failed: {e}")
+        print(f"❌ Failed to create tables: {e}")
         return False
 
 
 if __name__ == "__main__":
-    asyncio.run(init_db())
-    print("Database initialized successfully!")
+    main()

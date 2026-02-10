@@ -1,76 +1,61 @@
-from contextlib import asynccontextmanager
+"""FastAPI application for Todo App - Constitution compliant"""
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from .api.auth_router import router as auth_router
-from .api.class_router import router as class_router
-from .api.student_router import router as student_router
-from .api.subject_router import router as subject_router
-from .api.result_router import router as result_router
-from .config.settings import settings
-from .db import create_db_engine
-from sqlmodel import SQLModel
 import os
 
+from .api.health import router as health_router
+from .api.tasks import router as tasks_router
+from .database.connection import init_db
 
-# Create engine with SSL support for Neon
-DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./todo_app.db")
-engine = create_db_engine()
+# Get FRONTEND_URL from environment for CORS
+FRONTEND_URL = os.getenv("FRONTEND_URL", "http://localhost:3000")
 
-
-@asynccontextmanager
-async def lifespan(app: FastAPI):
-    """Lifespan event handler to create tables on startup"""
-    # Import all models to register them with SQLModel metadata
-    # Note: Due to compatibility issues, models are imported inside the lifespan function
-    try:
-        from .models.user_model import User
-        from .models.class_model import Class
-        from .models.student_model import Student
-        from .models.subject_model import Subject
-        from .models.result_model import Result
-
-        print("Creating tables...")
-        SQLModel.metadata.create_all(bind=engine)
-        print("Tables created successfully!")
-    except Exception as e:
-        print(f"Error creating tables: {e}")
-
-    yield
-    # Perform any cleanup on shutdown if needed
-
-
-# Create FastAPI application instance
+# Create FastAPI application
 app = FastAPI(
-    title="Teacher Planning App Backend",
-    description="A secure multi-user application for teachers to manage school plannings, student results, and task lists",
+    title="Todo App API",
+    description="Secure multi-user todo application with JWT authentication",
     version="1.0.0",
-    lifespan=lifespan
+    docs_url="/docs",
+    redoc_url="/redoc"
 )
 
-# Add CORS middleware to allow frontend communication
+# Configure CORS - Allow frontend origin only
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=settings.allowed_origins,
+    allow_origins=[
+        FRONTEND_URL,
+        "http://localhost:3000",  # Development fallback
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
-    # Expose authorization header to allow JWT tokens to be read by frontend
-    expose_headers=["Access-Control-Allow-Origin", "Authorization"]
+    expose_headers=["Authorization"]
 )
 
-# Include API routers
-app.include_router(auth_router, prefix="/api/v1/auth", tags=["authentication"])
-app.include_router(class_router, prefix="/api/v1/classes", tags=["classes"])
-app.include_router(student_router, prefix="/api/v1/students", tags=["students"])
-app.include_router(subject_router, prefix="/api/v1/subjects", tags=["subjects"])
-app.include_router(result_router, prefix="/api/v1/results", tags=["results"])
 
-# Health check endpoint
-@app.get("/health")
-async def health_check():
-    return {"status": "healthy", "service": "teacher-planning-backend"}
+@app.on_event("startup")
+async def startup_event():
+    """Initialize database on startup"""
+    try:
+        print("Initializing database...")
+        init_db()
+        print("[OK] Database initialized successfully")
+    except Exception as e:
+        print(f"[WARNING] Database initialization warning: {e}")
+        print("Tables may already exist or DATABASE_URL may not be set")
 
-# Root endpoint
+
+# Include routers
+app.include_router(health_router)  # /health
+app.include_router(tasks_router)   # /api/tasks/*
+
+
 @app.get("/")
 async def root():
-    return {"message": "Welcome to the Teacher Planning App Backend"}
+    """Root endpoint"""
+    return {
+        "message": "Todo App API",
+        "version": "1.0.0",
+        "docs": "/docs",
+        "health": "/health"
+    }

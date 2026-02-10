@@ -1,12 +1,15 @@
+# Backend dependencies for Python 3.11+ (3.14 not yet fully supported by all packages)
+# IMPORTANT: Use Python 3.11 or 3.12 for best compatibility
+
 fastapi==0.104.1
 uvicorn[standard]==0.24.0
-sqlmodel==0.0.16
-asyncpg==0.29.0
+sqlmodel==0.0.14
 psycopg2-binary==2.9.9
-pyjwt==2.8.0
-passlib[bcrypt]==1.7.4
+python-jose[cryptography]==3.3.0
 python-multipart==0.0.6
 python-dotenv==1.0.0
-cryptography==41.0.7
-better-exceptions==0.3.3
 httpx==0.25.2
+
+# For Pydantic v2 compatibility (required by FastAPI 0.104+)
+pydantic==2.5.0
+pydantic-core==2.14.1
