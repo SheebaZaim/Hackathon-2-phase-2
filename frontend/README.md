@@ -1,6 +1,6 @@
 # Todo App Frontend
 
-This is the frontend implementation for the Todo App Phase II project, built with Next.js 14 and integrated with Better Auth for authentication.
+This is the frontend implementation for the Todo App Phase II project, built with Next.js 16 and integrated with Better Auth for authentication.
 
 ## Features
 
@@ -15,20 +15,25 @@ This is the frontend implementation for the Todo App Phase II project, built wit
 
 The frontend follows the requirements specified in the project constitution and spec files:
 
-- Built with Next.js 14 using the App Router
+- Built with Next.js 16 using the App Router
 - Uses Better Auth for authentication management
 - Implements JWT token handling for secure communication with the backend
 - Follows a component-based architecture with reusable UI components
 
 ## Key Components
 
-- `auth.js`: Better Auth configuration and token management utilities
-- `auth_api.js`: Authentication API service with JWT interceptors
-- `task_api.js`: Task management API service with JWT interceptors
-- `TaskList.jsx`: Component for displaying and managing user tasks
-- `TaskForm.jsx`: Component for creating new tasks with validation
-- `ProtectedRoute.jsx`: Higher-order component for route protection
-- `AuthComponents.jsx`: Login and registration form components
+- `lib/auth-client.ts`: Better Auth configuration
+- `lib/token-utils.ts`: JWT token management utilities
+- `lib/api-client.ts`: Backend API service with JWT interceptors
+- `lib/types.ts`: TypeScript type definitions for API models
+- `hooks/useTasks.ts`: Custom hook for task CRUD operations
+- `components/tasks/TaskListComponent.tsx`: Component for displaying and managing tasks
+- `components/tasks/TaskFormComponent.tsx`: Component for creating new tasks
+- `components/tasks/TaskItemComponent.tsx`: Individual task item component
+- `components/tasks/TaskFilter.tsx`: Filter buttons for task views
+- `app/dashboard/page.tsx`: Protected dashboard page
+- `app/login/page.tsx`: Login page
+- `app/register/page.tsx`: Registration page
 
 ## Security Features
 

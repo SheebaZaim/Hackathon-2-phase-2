@@ -40,7 +40,17 @@
       "Bash(if [ -d \"backend_env_py311\" ])",
       "Bash(then ls backend_env_py311/)",
       "Bash(python -m pip:*)",
-      "Bash(python -m json.tool:*)"
+      "Bash(python -m json.tool:*)",
+      "Bash(npm install:*)",
+      "Bash(npm run dev:*)",
+      "Bash(backend_env_py311/Scripts/pip install passlib[bcrypt])",
+      "Bash(backend_env_py311/Scripts/pip install:*)",
+      "Bash(backend_env_py311Scriptspip.exe list)",
+      "Bash(python test_registration.py:*)",
+      "Bash(echo:*)",
+      "Bash(python run_migration.py:*)",
+      "Bash(../backend_env_py311/Scripts/python.exe:*)",
+      "Bash(ping:*)"
     ]
   }
 }

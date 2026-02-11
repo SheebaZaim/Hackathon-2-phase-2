@@ -5,6 +5,8 @@ import os
 
 from .api.health import router as health_router
 from .api.tasks import router as tasks_router
+from .api.auth import router as auth_router
+from .api.admin import router as admin_router
 from .database.connection import init_db
 
 # Get FRONTEND_URL from environment for CORS
@@ -47,7 +49,9 @@ async def startup_event():
 
 # Include routers
 app.include_router(health_router)  # /health
+app.include_router(auth_router)    # /auth/*
 app.include_router(tasks_router)   # /api/tasks/*
+app.include_router(admin_router)   # /admin/* (for database inspection)
 
 
 @app.get("/")

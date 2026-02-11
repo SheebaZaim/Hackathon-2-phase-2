@@ -44,8 +44,8 @@ async def get_current_user(
     token = credentials.credentials
     payload = verify_token(token)
 
-    # Extract user_id from token payload (sub claim)
-    user_id_str: str = payload.get("sub")
+    # Extract user_id from token payload (user_id claim)
+    user_id_str: str = payload.get("user_id")
     if not user_id_str:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,

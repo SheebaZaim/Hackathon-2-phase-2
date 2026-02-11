@@ -1,5 +1,5 @@
 {
-  "name": "teacher-planning-app-frontend",
+  "name": "todo-app-frontend",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@heroicons/react": "^2.2.0",
+    "@neondatabase/serverless": "^1.0.2",
     "@types/node": "^20.0.0",
     "@types/react": "^19.0.0",
     "autoprefixer": "^10.4.16",

@@ -15,6 +15,9 @@ class Task(SQLModel, table=True):
     title: str = Field(max_length=255, nullable=False)
     description: Optional[str] = Field(default=None, max_length=10000)
     completed: bool = Field(default=False, nullable=False)
+    priority: Optional[str] = Field(default="medium", max_length=20)
+    due_date: Optional[datetime] = Field(default=None)
+    category: Optional[str] = Field(default="", max_length=100)
     created_at: datetime = Field(default_factory=datetime.utcnow, nullable=False)
     updated_at: datetime = Field(default_factory=datetime.utcnow, nullable=False)
 
@@ -37,6 +40,9 @@ class TaskCreate(SQLModel):
 
     title: str = Field(min_length=1, max_length=255)
     description: Optional[str] = Field(default=None, max_length=10000)
+    priority: Optional[str] = Field(default="medium", max_length=20)
+    due_date: Optional[datetime] = Field(default=None)
+    category: Optional[str] = Field(default="", max_length=100)
 
 
 class TaskUpdate(SQLModel):
@@ -45,6 +51,9 @@ class TaskUpdate(SQLModel):
     title: Optional[str] = Field(default=None, min_length=1, max_length=255)
     description: Optional[str] = Field(default=None, max_length=10000)
     completed: Optional[bool] = None
+    priority: Optional[str] = Field(default=None, max_length=20)
+    due_date: Optional[datetime] = None
+    category: Optional[str] = Field(default=None, max_length=100)
 
 
 class TaskResponse(SQLModel):
@@ -54,6 +63,9 @@ class TaskResponse(SQLModel):
     title: str
     description: Optional[str]
     completed: bool
+    priority: Optional[str]
+    due_date: Optional[datetime]
+    category: Optional[str]
     created_at: datetime
     updated_at: datetime
 

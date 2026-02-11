@@ -47,6 +47,9 @@ async def get_tasks(
             title=task.title,
             description=task.description,
             completed=task.completed,
+            priority=task.priority,
+            due_date=task.due_date,
+            category=task.category,
             created_at=task.created_at,
             updated_at=task.updated_at
         )
@@ -79,6 +82,9 @@ async def create_task(
         title=task.title,
         description=task.description,
         completed=task.completed,
+        priority=task.priority,
+        due_date=task.due_date,
+        category=task.category,
         created_at=task.created_at,
         updated_at=task.updated_at
     )
@@ -110,6 +116,9 @@ async def get_task(
         title=task.title,
         description=task.description,
         completed=task.completed,
+        priority=task.priority,
+        due_date=task.due_date,
+        category=task.category,
         created_at=task.created_at,
         updated_at=task.updated_at
     )
@@ -143,6 +152,9 @@ async def update_task(
         title=task.title,
         description=task.description,
         completed=task.completed,
+        priority=task.priority,
+        due_date=task.due_date,
+        category=task.category,
         created_at=task.created_at,
         updated_at=task.updated_at
     )

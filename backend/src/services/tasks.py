@@ -21,7 +21,10 @@ class TaskService:
             user_id=user_id,
             title=task_data.title,
             description=task_data.description,
-            completed=False
+            completed=False,
+            priority=task_data.priority or "medium",
+            due_date=task_data.due_date,
+            category=task_data.category or ""
         )
         session.add(task)
         session.commit()
@@ -80,6 +83,12 @@ class TaskService:
             task.description = task_data.description
         if task_data.completed is not None:
             task.completed = task_data.completed
+        if task_data.priority is not None:
+            task.priority = task_data.priority
+        if task_data.due_date is not None:
+            task.due_date = task_data.due_date
+        if task_data.category is not None:
+            task.category = task_data.category
 
         task.updated_at = datetime.utcnow()
 
