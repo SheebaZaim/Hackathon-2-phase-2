@@ -182,3 +182,47 @@ async def delete_task(
         )
 
     return None  # 204 No Content
+
+
+@router.patch("/{task_id}/toggle-completion", response_model=TaskResponse)
+async def toggle_task_completion(
+    task_id: UUID,
+    auth_data: dict = Depends(get_current_user),
+    session: Session = Depends(get_session)
+):
+    """Toggle task completion status (must belong to authenticated user)"""
+    user_id = auth_data["user_id"]
+
+    # Get current task
+    task = TaskService.get_task(
+        session=session,
+        user_id=user_id,
+        task_id=task_id
+    )
+
+    if not task:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Task not found"
+        )
+
+    # Toggle completion
+    task_data = TaskUpdate(completed=not task.completed)
+    updated_task = TaskService.update_task(
+        session=session,
+        user_id=user_id,
+        task_id=task_id,
+        task_data=task_data
+    )
+
+    return TaskResponse(
+        id=updated_task.id,
+        title=updated_task.title,
+        description=updated_task.description,
+        completed=updated_task.completed,
+        priority=updated_task.priority,
+        due_date=updated_task.due_date,
+        category=updated_task.category,
+        created_at=updated_task.created_at,
+        updated_at=updated_task.updated_at
+    )

@@ -44,11 +44,31 @@ api.interceptors.response.use(
       }
     }
 
-    // Handle other errors
-    const errorMessage = error.response?.data
-      ? (error.response.data as any).detail || 'An error occurred'
-      : error.message;
+    // Extract error message properly
+    let errorMessage = 'An error occurred';
 
+    if (error.response?.data) {
+      const data = error.response.data as any;
+
+      // Handle FastAPI validation errors (422)
+      if (Array.isArray(data.detail)) {
+        const validationErrors = data.detail.map((err: any) => {
+          const field = err.loc ? err.loc[err.loc.length - 1] : 'field';
+          return `${field}: ${err.msg}`;
+        }).join(', ');
+        errorMessage = validationErrors || 'Validation error';
+      } else if (typeof data.detail === 'string') {
+        errorMessage = data.detail;
+      } else if (data.message) {
+        errorMessage = data.message;
+      } else if (data.error) {
+        errorMessage = data.error;
+      }
+    } else if (error.message) {
+      errorMessage = error.message;
+    }
+
+    console.error('API Error:', errorMessage, error);
     return Promise.reject(new Error(errorMessage));
   }
 );

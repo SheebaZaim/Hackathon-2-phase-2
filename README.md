@@ -1,234 +1,320 @@
-# Todo App - Phase II
+# Todo App - Full Stack Application
 
-A secure multi-user full-stack web application for managing personal todo tasks. Built following spec-driven development methodology with constitution-compliant architecture.
+A modern, full-stack Todo application with user authentication, task management, and a clean UI. Built with Next.js, FastAPI, and PostgreSQL (Neon).
 
-## Features
-
-- **Secure Authentication**: Better Auth + JWT token-based authentication
-- **Multi-User Support**: Each user has their own isolated task list
-- **Task Management**: Create, update, complete, and delete tasks
-- **Responsive Design**: Clean, simple UI that works on mobile, tablet, and desktop
-- **Real-time Updates**: Modern React-based frontend with Next.js 16+
-- **RESTful API**: Stateless backend with FastAPI and auto-generated API documentation
-
-## Tech Stack (Constitution-Compliant)
-
-- **Frontend**: Next.js 16+ (App Router), React, Better Auth, TailwindCSS
-- **Backend**: Python FastAPI, SQLModel ORM
-- **Database**: Neon Serverless PostgreSQL
-- **Authentication**: Better Auth (frontend) + JWT verification (backend)
-- **Architecture**: Separate frontend/backend services, stateless authentication
-
-## Project Structure
-
-```
-├── frontend/                # Next.js 16+ application
-│   ├── src/
-│   │   ├── app/            # Next.js App Router pages
-│   │   ├── components/     # React UI components
-│   │   ├── lib/            # Utilities (auth, API client, types)
-│   │   └── styles/         # TailwindCSS global styles
-│   ├── .env.example        # Frontend environment template
-│   └── package.json
-│
-├── backend/                 # FastAPI application
-│   ├── src/
-│   │   ├── api/            # API route handlers
-│   │   ├── models/         # SQLModel database models
-│   │   ├── services/       # Business logic layer
-│   │   ├── middleware/     # JWT authentication middleware
-│   │   └── database/       # Database connection
-│   ├── .env.example        # Backend environment template
-│   └── requirements.txt
-│
-├── specs/                   # Feature specifications
-│   ├── sp.constitution.md  # Project constitution (architectural rules)
-│   └── */                  # Feature-specific specs, plans, tasks
-│
-└── README.md               # This file
-```
-
-## Quick Start (<10 minutes)
+## 🚀 Quick Start
 
 ### Prerequisites
 
-- Node.js 18+
-- Python 3.11+
-- npm or pnpm
-- Neon PostgreSQL account (free tier available)
+- **Node.js** 18+ and npm
+- **Python** 3.11 or 3.12
+- **PostgreSQL** database (Neon recommended)
 
-### 1. Install Dependencies
+### 1. Clone and Setup
 
 ```bash
-# Frontend
-cd frontend
-npm install
-cd ..
+git clone <your-repo-url>
+cd from-phase-2
+```
 
-# Backend
+### 2. Backend Setup
+
+```bash
 cd backend
+
+# Install dependencies
 pip install -r requirements.txt
+
+# Create .env file with your database connection
+# DATABASE_URL=postgresql://user:pass@host/dbname?sslmode=require
+# BETTER_AUTH_SECRET=your-secret-key-here
+
+# Run database migrations (if needed)
+cd migrations
+python run_migration.py 001_fix_users_table_nullable_fields.sql
 cd ..
+
+# Start backend server
+python -m uvicorn src.main:app --reload --host 0.0.0.0 --port 8000
 ```
 
-### 2. Configure Environment Variables
+Backend will run on: **http://localhost:8000**
 
-#### Frontend (.env)
+### 3. Frontend Setup
 
 ```bash
 cd frontend
-cp .env.example .env
-```
 
-Edit `frontend/.env`:
-```
-DATABASE_URL=postgresql://user:pass@ep-xxx.region.aws.neon.tech/dbname?sslmode=require
-BETTER_AUTH_SECRET=<generate-with-openssl-rand-hex-32>
-NEXT_PUBLIC_API_URL=http://localhost:8000
-```
+# Install dependencies
+npm install
 
-#### Backend (.env)
+# Create .env.local file
+# NEXT_PUBLIC_BACKEND_URL=http://localhost:8000
 
-```bash
-cd backend
-cp .env.example .env
-```
-
-Edit `backend/.env`:
-```
-DATABASE_URL=postgresql://user:pass@ep-xxx.region.aws.neon.tech/dbname?sslmode=require
-BETTER_AUTH_SECRET=<same-secret-as-frontend>
-FRONTEND_URL=http://localhost:3000
-```
-
-**⚠️ CRITICAL**: `BETTER_AUTH_SECRET` must be identical in both .env files!
-
-### 3. Start Services
-
-**Terminal 1 - Backend:**
-```bash
-cd backend
-uvicorn src.main:app --reload
-# Runs on http://localhost:8000
-```
-
-**Terminal 2 - Frontend:**
-```bash
-cd frontend
+# Start frontend server
 npm run dev
-# Runs on http://localhost:3000
 ```
 
-### 4. Verify Setup
+Frontend will run on: **http://localhost:3000**
 
-- Frontend: http://localhost:3000 (should show authentication screen)
-- Backend Health: http://localhost:8000/health
-- API Docs: http://localhost:8000/docs (auto-generated Swagger UI)
+## 📋 Features
 
-## API Endpoints
+### Authentication
+- ✅ User registration with email/password
+- ✅ Secure login with JWT tokens
+- ✅ Password hashing (SHA-256)
+- ✅ Protected routes
+- ✅ Multi-user support (each user sees only their tasks)
 
-### Health
-- `GET /health` - Service health check with database status
+### Task Management
+- ✅ Create tasks with title, description, priority, due date, category
+- ✅ Mark tasks as complete/incomplete
+- ✅ Edit task details
+- ✅ Delete tasks
+- ✅ Filter tasks (All/Active/Completed)
+- ✅ Task persistence in PostgreSQL database
 
-### Tasks (requires authentication)
-- `GET /api/tasks` - Get all tasks for authenticated user
-- `POST /api/tasks` - Create a new task
-- `GET /api/tasks/{id}` - Get specific task
-- `PUT /api/tasks/{id}` - Update task (title, description, completed status)
-- `DELETE /api/tasks/{id}` - Delete task
+### UI/UX
+- ✅ Clean, responsive design
+- ✅ Real-time updates
+- ✅ Form validation
+- ✅ Error handling with user-friendly messages
+- ✅ Loading states
 
-All task endpoints require JWT token in `Authorization: Bearer <token>` header.
+## 🏗️ Tech Stack
 
-## Architecture
+### Frontend
+- **Framework:** Next.js 14+ (React 18)
+- **Styling:** Tailwind CSS
+- **HTTP Client:** Axios
+- **Language:** TypeScript
 
-### Authentication Flow
+### Backend
+- **Framework:** FastAPI
+- **ORM:** SQLModel
+- **Database:** PostgreSQL (Neon)
+- **Authentication:** JWT (python-jose)
+- **Language:** Python 3.11+
 
-1. **User Registration/Login**: Handled by Better Auth on frontend
-2. **JWT Token Generation**: Better Auth issues JWT token on successful auth
-3. **Token Storage**: Stored securely in httpOnly cookies
-4. **API Requests**: Frontend attaches JWT to Authorization header
-5. **Backend Verification**: FastAPI middleware verifies JWT using shared secret
-6. **User Context**: Extracted from valid JWT for data isolation
+### Database
+- **Provider:** Neon (PostgreSQL)
+- **Tables:** users, tasks
+- **Features:** UUID primary keys, timestamps, foreign keys
 
-### Data Isolation
+## 📁 Project Structure
 
-- Each user's tasks are completely isolated
-- Backend filters all queries by `user_id` from JWT payload
-- No cross-user data access possible
+```
+from-phase-2/
+├── .agents/              # AI agent configurations
+├── .claude/              # Claude Code settings
+├── .qwen/                # Qwen AI configurations
+├── .spec-kit/            # Spec-Kit configurations
+├── backend/              # FastAPI backend
+│   ├── migrations/       # Database migrations
+│   ├── src/
+│   │   ├── api/          # API endpoints (auth, tasks)
+│   │   ├── models/       # SQLModel definitions
+│   │   ├── middleware/   # Auth middleware
+│   │   └── main.py       # FastAPI app
+│   ├── requirements.txt
+│   └── .env              # Database connection (not in git)
+├── frontend/             # Next.js frontend
+│   ├── src/
+│   │   ├── app/          # Pages (dashboard, login, register)
+│   │   ├── components/   # React components (tasks)
+│   │   └── lib/          # API client, types
+│   ├── package.json
+│   └── .env.local        # Backend URL (not in git)
+├── specs/                # Specifications
+│   ├── features/         # Feature specs
+│   ├── api/              # API specs
+│   ├── database/         # Database specs
+│   └── ui/               # UI specs
+├── history/              # Project history
+├── plans/                # Planning documents
+├── tasks/                # Task tracking
+└── README.md             # This file
+```
 
-### Constitution Compliance
+## 🔧 Configuration
 
-This project strictly follows architectural rules defined in `specs/sp.constitution.md`:
+### Backend Environment (.env)
 
-✅ Fixed technology stack (no deviations allowed)
-✅ Frontend and backend as separate services
-✅ Stateless backend (JWT-only, no server sessions)
-✅ Better Auth on frontend only
-✅ RESTful APIs with proper error handling
-✅ Spec-driven development (all code from specifications)
+```env
+DATABASE_URL=postgresql://user:password@host/database?sslmode=require
+BETTER_AUTH_SECRET=your-secret-key-minimum-32-characters
+```
 
-## Development
+### Frontend Environment (.env.local)
 
-### Workflow
+```env
+NEXT_PUBLIC_BACKEND_URL=http://localhost:8000
+```
 
-1. All features start with specifications in `/specs`
-2. Specifications → Implementation plans → Tasks
-3. Tasks executed following dependency order
-4. Constitution compliance verified throughout
+## 🗄️ Database Schema
 
-### Testing
+### Users Table
+- `id` (UUID, primary key)
+- `email` (string, unique)
+- `first_name` (string, nullable)
+- `last_name` (string, nullable)
+- `password_hash` (string)
+- `created_at` (timestamp)
+- `updated_at` (timestamp)
 
-- Frontend: Manual testing (run dev server, verify UI)
-- Backend: Manual testing (health check, API docs)
-- Integration: End-to-end user flows (signup → create task → logout)
+### Tasks Table
+- `id` (UUID, primary key)
+- `user_id` (UUID, foreign key → users.id)
+- `title` (string, max 255)
+- `description` (text, nullable)
+- `completed` (boolean, default false)
+- `priority` (string: low/medium/high)
+- `due_date` (datetime, nullable)
+- `category` (string, nullable)
+- `created_at` (timestamp)
+- `updated_at` (timestamp)
 
-### Environment Variables
+## 🧪 Testing
 
-See `.env.example` files in frontend/ and backend/ for complete variable documentation.
-
-**Required Variables:**
-- `DATABASE_URL`: Neon PostgreSQL connection (must include `?sslmode=require`)
-- `BETTER_AUTH_SECRET`: Shared secret for JWT (min 32 chars)
-- `NEXT_PUBLIC_API_URL`: Backend API URL (frontend)
-- `FRONTEND_URL`: Frontend URL for CORS (backend)
-
-## Troubleshooting
-
-**Port conflicts:**
+### Backend Health Check
 ```bash
-# Backend (default 8000)
-lsof -ti:8000 | xargs kill -9
-
-# Frontend (default 3000)
-lsof -ti:3000 | xargs kill -9
+curl http://localhost:8000/health
 ```
 
-**Database connection:**
-- Verify DATABASE_URL includes `?sslmode=require`
-- Check Neon database is not paused (auto-pauses after inactivity)
+Expected response:
+```json
+{
+  "status": "healthy",
+  "timestamp": "2026-02-12T12:00:00",
+  "database": "connected"
+}
+```
 
-**Authentication errors:**
-- Ensure BETTER_AUTH_SECRET matches in both .env files
-- Check JWT token is in Authorization header: `Bearer <token>`
+### Test Registration
+```bash
+curl -X POST http://localhost:8000/auth/register \
+  -H "Content-Type: application/json" \
+  -d '{"email":"test@example.com","password":"password123"}'
+```
 
-**CORS errors:**
-- Verify FRONTEND_URL in backend .env matches frontend URL
-- Check backend CORS middleware allows frontend origin
+### Test Login
+```bash
+curl -X POST http://localhost:8000/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"email":"test@example.com","password":"password123"}'
+```
 
-## Contributing
+### Full UI Test Flow
+1. Open http://localhost:3000
+2. Click "Get Started"
+3. Register with email/password
+4. Create a new task
+5. Test complete/edit/delete
+6. Test filters
+7. Logout and login again
 
-1. Follow spec-driven development approach
-2. All changes must originate from specifications
-3. Verify constitution compliance before committing
-4. Use feature branches: `###-feature-name`
-5. Test locally before pushing
+## 📚 API Documentation
 
-## License
+Once the backend is running, visit:
+- **Swagger UI:** http://localhost:8000/docs
+- **ReDoc:** http://localhost:8000/redoc
+
+## 🔐 Security
+
+- Passwords are hashed using SHA-256
+- JWT tokens for authentication
+- CORS configured for localhost:3000
+- Database connections use SSL
+- Environment variables for sensitive data
+- SQL injection protection via SQLModel
+
+## 🐛 Troubleshooting
+
+### Backend won't start
+- Check Python version: `python --version` (should be 3.11+)
+- Verify DATABASE_URL in .env
+- Install dependencies: `pip install -r requirements.txt`
+
+### Frontend won't start
+- Check Node version: `node --version` (should be 18+)
+- Install dependencies: `npm install`
+- Verify NEXT_PUBLIC_BACKEND_URL in .env.local
+
+### Database connection errors
+- Verify DATABASE_URL format
+- Check Neon project is active
+- Test connection: `psql "your-database-url"`
+
+### 401 Unauthorized errors
+- Clear browser localStorage
+- Re-register/login
+- Check JWT token in browser DevTools → Application → Local Storage
+
+### Tasks not loading
+- Check backend is running on port 8000
+- Check browser console for errors
+- Verify auth token exists in localStorage
+
+## 🚢 Deployment
+
+### Backend (Railway, Render, Fly.io)
+1. Set environment variables (DATABASE_URL, BETTER_AUTH_SECRET)
+2. Deploy from backend/ directory
+3. Use: `uvicorn src.main:app --host 0.0.0.0 --port $PORT`
+
+### Frontend (Vercel, Netlify)
+1. Set NEXT_PUBLIC_BACKEND_URL to your backend URL
+2. Deploy from frontend/ directory
+3. Build command: `npm run build`
+4. Output directory: `.next`
+
+### Database (Neon)
+- Already hosted on Neon
+- No additional deployment needed
+- Use connection string in backend .env
+
+## 📖 Documentation
+
+- **Specifications:** `/specs` - Feature and API specifications
+- **Status Files:** Root directory - CURRENT_STATUS.md, FIXES_APPLIED.md, etc.
+- **Plans:** `/plans` - Implementation plans
+- **History:** `/history` - Project development history
+
+## 🤝 Contributing
+
+1. Read specifications in `/specs`
+2. Check current status in status files
+3. Follow existing code structure
+4. Test before committing
+5. Update relevant documentation
+
+## 📄 License
 
 MIT License - See LICENSE file for details
 
+## 👥 Authors
+
+- Your Name/Team
+
+## 🙏 Acknowledgments
+
+- Built with Next.js, FastAPI, and Neon
+- Spec-driven development using GitHub Spec-Kit
+- AI-assisted development with Claude Code
+
 ---
 
-**Project Status**: Phase II - Cleanup and Functional Setup Complete
-**Constitution Version**: 1.0.0
-**Last Updated**: 2026-02-09
+**Need help?** Check status files in root directory or specifications in `/specs`
+
+**Quick Commands:**
+```bash
+# Start backend
+
+cd backend && python -m uvicorn src.main:app --reload
+
+# Start frontend
+cd frontend && npm run dev
+
+# Run migrations
+cd backend/migrations && python run_migration.py <migration-file.sql>
+```

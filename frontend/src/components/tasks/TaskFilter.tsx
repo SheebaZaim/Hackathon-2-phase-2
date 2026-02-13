@@ -30,7 +30,7 @@ export default function TaskFilter({ activeFilter, onFilterChange }: TaskFilterP
           className={`
             px-4 py-2 rounded-lg font-medium transition-all
             ${activeFilter === filter.value
-              ? 'bg-green-600 text-white shadow-md'
+              ? 'bg-blue-600 text-white shadow-md'
               : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
             }
           `}

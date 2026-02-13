@@ -2,7 +2,7 @@
 from fastapi import APIRouter, HTTPException, Depends
 from pydantic import BaseModel, EmailStr
 from sqlmodel import Session, select
-import hashlib
+import bcrypt
 from jose import jwt
 from datetime import datetime, timedelta
 import os
@@ -12,9 +12,6 @@ from ..models.user import User
 import uuid
 
 router = APIRouter(prefix="/auth", tags=["Authentication"])
-
-# Password hashing
-SALT = "todo_app_salt_2026"  # In production, use proper secret
 
 # JWT settings
 SECRET_KEY = os.getenv("BETTER_AUTH_SECRET", "supersecretdevelopmentkey")
@@ -38,14 +35,18 @@ class TokenResponse(BaseModel):
 
 
 def hash_password(password: str) -> str:
-    """Hash a password using SHA-256"""
-    salted = f"{password}{SALT}".encode('utf-8')
-    return hashlib.sha256(salted).hexdigest()
+    """Hash a password using bcrypt (secure, generates unique salt per password)"""
+    password_bytes = password.encode('utf-8')
+    salt = bcrypt.gensalt()
+    hashed = bcrypt.hashpw(password_bytes, salt)
+    return hashed.decode('utf-8')
 
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
-    """Verify a password against its hash"""
-    return hash_password(plain_password) == hashed_password
+    """Verify a password against its bcrypt hash"""
+    password_bytes = plain_password.encode('utf-8')
+    hashed_bytes = hashed_password.encode('utf-8')
+    return bcrypt.checkpw(password_bytes, hashed_bytes)
 
 
 def create_access_token(user_id: uuid.UUID, email: str) -> str:
@@ -119,3 +120,13 @@ async def login(
         access_token=access_token,
         token_type="bearer"
     )
+
+
+@router.post("/logout")
+async def logout():
+    """
+    Logout user (client-side token removal)
+    Since we're using stateless JWT, logout is handled client-side by removing the token.
+    This endpoint exists for API completeness and future session management.
+    """
+    return {"message": "Logged out successfully"}

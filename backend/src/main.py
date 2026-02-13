@@ -6,6 +6,7 @@ import os
 from .api.health import router as health_router
 from .api.tasks import router as tasks_router
 from .api.auth import router as auth_router
+from .api.users import router as users_router
 from .api.admin import router as admin_router
 from .database.connection import init_db
 
@@ -50,6 +51,7 @@ async def startup_event():
 # Include routers
 app.include_router(health_router)  # /health
 app.include_router(auth_router)    # /auth/*
+app.include_router(users_router)   # /users/*
 app.include_router(tasks_router)   # /api/tasks/*
 app.include_router(admin_router)   # /admin/* (for database inspection)
 

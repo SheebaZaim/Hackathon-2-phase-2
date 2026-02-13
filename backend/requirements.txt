@@ -9,6 +9,7 @@ python-jose[cryptography]==3.3.0
 python-multipart==0.0.6
 python-dotenv==1.0.0
 httpx==0.25.2
+bcrypt==4.1.2
 
 # For Pydantic v2 compatibility (required by FastAPI 0.104+)
 pydantic==2.5.0

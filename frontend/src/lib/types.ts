@@ -12,6 +12,7 @@ export interface User {
 export interface Task {
   id: string;
   title: string;
+  description?: string | null;
   completed: boolean;
   priority?: string | null;
   due_date?: string | null;

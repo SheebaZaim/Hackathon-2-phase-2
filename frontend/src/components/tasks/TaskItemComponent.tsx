@@ -96,7 +96,7 @@ export default function TaskItemComponent({ task, onToggle, onDelete, onEdit }: 
       case 'medium':
         return 'bg-yellow-100 text-yellow-700';
       case 'low':
-        return 'bg-green-100 text-green-700';
+        return 'bg-blue-100 text-blue-700';
       default:
         return 'bg-gray-100 text-gray-700';
     }
@@ -169,7 +169,7 @@ export default function TaskItemComponent({ task, onToggle, onDelete, onEdit }: 
             <button
               onClick={handleEdit}
               disabled={loading}
-              className="px-3 py-1 text-sm bg-green-600 text-white rounded hover:bg-green-700 disabled:bg-gray-300"
+              className="px-3 py-1 text-sm bg-blue-600 text-white rounded hover:bg-blue-700 disabled:bg-gray-300"
             >
               Save
             </button>

@@ -52,7 +52,12 @@ export default function TaskFormComponent({ onSubmit }: TaskFormProps) {
         taskData.priority = priority;
       }
       if (dueDate) {
-        taskData.due_date = dueDate;
+        // Convert date to ISO datetime format
+        // HTML5 date input returns YYYY-MM-DD, we need YYYY-MM-DDTHH:MM:SS
+        const dateObj = new Date(dueDate);
+        if (!isNaN(dateObj.getTime())) {
+          taskData.due_date = `${dueDate}T00:00:00`;
+        }
       }
       if (category.trim()) {
         taskData.category = category.trim();
@@ -84,7 +89,7 @@ export default function TaskFormComponent({ onSubmit }: TaskFormProps) {
             onChange={(e) => setTitle(e.target.value)}
             placeholder="Task title *"
             disabled={loading}
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
             maxLength={500}
             required
           />
@@ -109,7 +114,7 @@ export default function TaskFormComponent({ onSubmit }: TaskFormProps) {
             value={priority}
             onChange={(e) => setPriority(e.target.value)}
             disabled={loading}
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
           >
             <option value="low">Low Priority</option>
             <option value="medium">Medium Priority</option>
@@ -124,7 +129,7 @@ export default function TaskFormComponent({ onSubmit }: TaskFormProps) {
             value={dueDate}
             onChange={(e) => setDueDate(e.target.value)}
             disabled={loading}
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
           />
         </div>
 
@@ -136,7 +141,7 @@ export default function TaskFormComponent({ onSubmit }: TaskFormProps) {
             onChange={(e) => setCategory(e.target.value)}
             placeholder="Category/Status (optional)"
             disabled={loading}
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
             maxLength={100}
           />
         </div>
@@ -146,7 +151,7 @@ export default function TaskFormComponent({ onSubmit }: TaskFormProps) {
           <button
             type="submit"
             disabled={loading || !title.trim()}
-            className="w-full px-6 py-3 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors shadow-md hover:shadow-lg"
+            className="w-full px-6 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors shadow-md hover:shadow-lg"
           >
             {loading ? 'Adding...' : 'Add Task'}
           </button>
