@@ -4,7 +4,7 @@
  */
 
 import axios, { AxiosInstance, AxiosError } from 'axios';
-import type { Task, HealthStatus, TaskCreateRequest, TaskUpdateRequest } from './types';
+import type { Task, HealthStatus, TaskCreateRequest, TaskUpdateRequest, TaskListResponse } from './types';
 
 // Create axios instance with base configuration
 const api: AxiosInstance = axios.create({
