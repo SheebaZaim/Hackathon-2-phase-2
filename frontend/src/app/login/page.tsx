@@ -7,8 +7,7 @@
 
 import { useState, FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
-import { login } from '@/lib/auth-simple';
-import { setAuthToken } from '@/lib/token-utils';
+import { login } from '@/lib/auth';
 import Link from 'next/link';
 
 export default function LoginPage() {
@@ -25,11 +24,8 @@ export default function LoginPage() {
     setError('');
 
     try {
-      // Login with backend
-      const result = await login(email, password);
-
-      // Store token
-      setAuthToken(result.access_token);
+      // Login with backend (token is automatically stored)
+      await login(email, password);
 
       // Small delay to ensure token is stored before redirect
       await new Promise(resolve => setTimeout(resolve, 100));

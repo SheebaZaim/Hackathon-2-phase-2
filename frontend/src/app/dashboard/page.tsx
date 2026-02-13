@@ -7,7 +7,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { getCurrentUser, logout, isAuthenticated } from '@/lib/auth-simple';
+import { getCurrentUser, logout, isAuthenticated } from '@/lib/auth';
 import { useTasks } from '@/hooks/useTasks';
 import TaskListComponent from '@/components/tasks/TaskListComponent';
 import TaskFormComponent from '@/components/tasks/TaskFormComponent';
