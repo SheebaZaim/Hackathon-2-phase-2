@@ -12,7 +12,6 @@ class Task(SQLModel, table=True):
 
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
     user_id: uuid.UUID = Field(foreign_key="users.id", index=True, nullable=False)
-    todo_list_id: Optional[uuid.UUID] = Field(default=None, foreign_key="todo_lists.id", index=True)
     title: str = Field(max_length=255, nullable=False)
     description: Optional[str] = Field(default=None, max_length=10000)
     completed: bool = Field(default=False, nullable=False)
@@ -44,7 +43,6 @@ class TaskCreate(SQLModel):
     priority: Optional[str] = Field(default="medium", max_length=20)
     due_date: Optional[datetime] = Field(default=None)
     category: Optional[str] = Field(default="", max_length=100)
-    todo_list_id: Optional[uuid.UUID] = Field(default=None)
 
 
 class TaskUpdate(SQLModel):
@@ -56,14 +54,12 @@ class TaskUpdate(SQLModel):
     priority: Optional[str] = Field(default=None, max_length=20)
     due_date: Optional[datetime] = None
     category: Optional[str] = Field(default=None, max_length=100)
-    todo_list_id: Optional[uuid.UUID] = None
 
 
 class TaskResponse(SQLModel):
     """Response model for task"""
 
     id: uuid.UUID
-    todo_list_id: Optional[uuid.UUID]
     title: str
     description: Optional[str]
     completed: bool
