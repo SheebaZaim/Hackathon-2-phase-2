@@ -28,7 +28,9 @@ app.add_middleware(
     allow_origins=[
         FRONTEND_URL,
         "http://localhost:3000",  # Development fallback
+        "https://*.vercel.app",  # Vercel deployments
     ],
+    allow_origin_regex=r"https://.*\.vercel\.app",  # Allow all Vercel domains
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
