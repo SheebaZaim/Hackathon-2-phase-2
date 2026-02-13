@@ -110,12 +110,11 @@ export default function TaskListComponent({
   }
 
   if (error) {
-    const errorMessage = typeof error === 'string' ? error : error?.message || 'Failed to load tasks';
     return (
       <div className="p-6 text-center">
         <div className="text-red-600 bg-red-50 rounded-lg p-4 border border-red-200">
           <p className="font-medium">Error loading tasks</p>
-          <p className="text-sm mt-1">{errorMessage}</p>
+          <p className="text-sm mt-1">{error}</p>
         </div>
       </div>
     );
