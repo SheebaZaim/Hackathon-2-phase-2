@@ -3,7 +3,7 @@ __pycache__/
 *$py.class
 *.so
 .Python
-.env
+# .env - Commented out to allow Docker to copy for HF Spaces deployment
 .venv
 env/
 venv/
